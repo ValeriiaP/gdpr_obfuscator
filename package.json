@@ -1,0 +1,20 @@
+{
+  "name": "gdpr_obfuscator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ValeriiaP/gdpr_obfuscator.git"
+  },
+  "keywords": [],
+  "author": "Valerie Parfeliuk",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ValeriiaP/gdpr_obfuscator/issues"
+  },
+  "homepage": "https://github.com/ValeriiaP/gdpr_obfuscator#readme"
+}
