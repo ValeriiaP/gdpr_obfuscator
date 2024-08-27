@@ -1,6 +1,8 @@
 import boto3
 import botocore
 import urllib.parse as urlparse
+from io import StringIO
+import pandas as pd
 
 def read_file_s3(s3_path: str) -> None:
     """Reads a file from an S3 bucket.
@@ -15,10 +17,12 @@ def read_file_s3(s3_path: str) -> None:
         file_key = parsed_url.path.lstrip('/')
         s3 = boto3.client('s3')
         obj = s3.get_object(Bucket=bucket_name, Key=file_key)
-        body = obj['Body']
-        data = body.read().decode('utf-8')
+        body = obj['Body'].read().decode('utf-8')
+        data = StringIO(body)
+        df = pd.read_csv(data)
+        # df = pd.read_json(data)
         print('File read successfully')
-        return data
+        return df
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == "404":
             print("The file does not exist.")
@@ -26,4 +30,5 @@ def read_file_s3(s3_path: str) -> None:
             raise
 
 read_file_s3('s3://test-bucket-270824/input/test.csv')
+# read_file_s3('s3://test-bucket-270824/test.json')
 
