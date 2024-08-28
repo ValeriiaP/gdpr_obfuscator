@@ -1,12 +1,12 @@
 import pandas as pd
 import io
 import logging
-import read_file_s3 as rf
 
 logging.basicConfig(level=logging.INFO)
 
 
-def mask_sensitive_data(dataframe: pd.DataFrame, pii_fields: list) -> pd.DataFrame:
+def mask_sensitive_data(
+        dataframe: pd.DataFrame, pii_fields: list) -> pd.DataFrame:
     """ This function mask sensitive data in the dataframe.
 
     Args:
@@ -14,7 +14,7 @@ def mask_sensitive_data(dataframe: pd.DataFrame, pii_fields: list) -> pd.DataFra
         pii_fields: list of strings
 
     Returns:
-    DataFrame with replacing sensitive information.
+    DataFrame with replaced sensitive information.
 
     """
     for field in pii_fields:
@@ -25,24 +25,30 @@ def mask_sensitive_data(dataframe: pd.DataFrame, pii_fields: list) -> pd.DataFra
     return dataframe
 
 
-def create_masked_csv_or_byte_stream(masked_df: pd.DataFrame, type_result: str) -> None:
-    """ This function creates a masked csv file.
+def generate_masked_output(
+        masked_df: pd.DataFrame, type_result: str, file_format) -> None:
+    """ This function creates a masked csv or json file or byte-stream.
 
     Args:
-        dataframe: DataFrame
+        masked_df: DataFrame
         type_result: str
 
     Returns:
-    csv file with masked data or byte stream.
+    file in json or csv format with masked data or byte-stream.
     """
     try:
-        if type_result == 'csv':
-            return masked_df.to_csv('result.csv', index=False, encoding='utf-8')
-        else:
+        if file_format == 'json' and type_result == 'file':
+            masked_df.to_json(
+                'result.json', orient='records', lines=True)
+        elif type_result == 'byte-stream' and file_format == 'csv':
             byte_stream = io.BytesIO()
             masked_df.to_csv(byte_stream, index=False)
             byte_stream_value = byte_stream.getvalue()
             logging.info(byte_stream_value)
-            print(byte_stream_value)
+            return byte_stream_value
+        elif file_format == 'csv' and type_result == 'file':
+            masked_df.to_csv(
+                'result.csv', index=False, encoding='utf-8')
     except Exception as e:
-        logging.error(f"Error CSV file: {e}")
+        logging.error(f"Error creating file or byte-stream: {e}")
+        raise
