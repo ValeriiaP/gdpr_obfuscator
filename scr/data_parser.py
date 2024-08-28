@@ -11,7 +11,7 @@ def s3_path_parser(s3_path: str) -> None:
         s3_path: str
 
     Returns:
-    dictionary with bucket_name, file_key and file format.
+    dictionary with next keys: bucket_name, file_key and file format.
 
     """
     parsed_url = urlparse.urlparse(s3_path)
