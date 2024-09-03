@@ -2,7 +2,8 @@ import pandas as pd
 import io
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.info)
+logging.basicConfig(level=logging.warning)
 
 
 def mask_sensitive_data(
@@ -17,6 +18,9 @@ def mask_sensitive_data(
     DataFrame with replaced sensitive information.
 
     """
+    if not pii_fields:
+        logging.info('No sensitive fields provided.')
+        return dataframe
     for field in pii_fields:
         if field in dataframe.columns:
             dataframe[field] = '***'
@@ -27,26 +31,32 @@ def mask_sensitive_data(
 
 def generate_masked_output(
         masked_df: pd.DataFrame, type_result: str, file_format) -> None:
-    """ This function creates a masked csv or json file or byte-stream.
+    """ This function creates a csv, json file or byte-stream.
 
     Args:
         masked_df: DataFrame
         type_result: str
 
     Returns:
-    file in json or csv format with masked data or byte-stream.
+    file in json, csv format or byte-stream with masked data.
     """
     try:
         if file_format == 'json' and type_result == 'file':
             masked_df.to_json(
                 'result.json', orient='records', lines=True)
-        elif type_result == 'byte-stream' and file_format == 'csv':
+        if type_result == 'byte-stream' and file_format == 'csv':
             byte_stream = io.BytesIO()
             masked_df.to_csv(byte_stream, index=False)
             byte_stream_value = byte_stream.getvalue()
             logging.info(byte_stream_value)
             return byte_stream_value
-        elif file_format == 'csv' and type_result == 'file':
+        if file_format == 'json' and type_result == 'byte-stream':
+            byte_stream = io.BytesIO()
+            masked_df.to_json(byte_stream, orient='records', lines=True)
+            byte_stream_value = byte_stream.getvalue()
+            logging.info(byte_stream_value)
+            return byte_stream_value
+        if file_format == 'csv' and type_result == 'file':
             masked_df.to_csv(
                 'result.csv', index=False, encoding='utf-8')
     except Exception as e:
