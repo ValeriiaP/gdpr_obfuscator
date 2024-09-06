@@ -13,7 +13,7 @@ def obfuscate(input: JSON, type_result: str) -> None:
         pii_fields: list of strings
 
     Returns:
-    csv file with masked data or byte stream.
+    csv, json file or byte stream with masked data.
 
     """
     params = parser(input['file_to_obfuscate'])
@@ -26,6 +26,6 @@ def obfuscate(input: JSON, type_result: str) -> None:
 
 
 obfuscate({
-    "file_to_obfuscate": 's3://test-bucket-270824/input/test.csv',
+    "file_to_obfuscate": 's3://test-bucket-030924/input/test.json',
     "pii_fields": ["Name", "Email"]
 }, 'byte-stream')
