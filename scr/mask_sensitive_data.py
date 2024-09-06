@@ -2,7 +2,7 @@ import pandas as pd
 import io
 import logging
 
-logging.basicConfig(level=logging.info)
+logging.basicConfig(level=logging.INFO)
 logging.basicConfig(level=logging.warning)
 
 
@@ -44,7 +44,7 @@ def generate_masked_output(
         if file_format == 'json' and type_result == 'file':
             masked_df.to_json(
                 'result.json', orient='records', lines=True)
-        if type_result == 'byte-stream' and file_format == 'csv':
+        if file_format == 'csv' and type_result == 'byte-stream':
             byte_stream = io.BytesIO()
             masked_df.to_csv(byte_stream, index=False)
             byte_stream_value = byte_stream.getvalue()
