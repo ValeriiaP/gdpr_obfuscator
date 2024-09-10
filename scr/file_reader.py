@@ -4,7 +4,7 @@ from io import StringIO
 import pandas as pd
 
 
-def read_from_S3(params: dict) -> None:
+def read_from_S3(params: dict) -> StringIO:
     """This function reads the file from an S3 bucket.
     args:
         params: dict
@@ -26,7 +26,7 @@ def read_from_S3(params: dict) -> None:
             raise
 
 
-def read_from_file(params: dict) -> None:
+def read_from_file(params: dict) -> pd.DataFrame:
     """This function reads a data from a file in S3 bucket.
     args:
         params: dict
