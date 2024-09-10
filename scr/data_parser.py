@@ -1,7 +1,7 @@
 import urllib.parse as urlparse
 
 
-def s3_path_parser(s3_path: str) -> None:
+def s3_path_parser(s3_path: str) -> dict:
     """This function parse the s3 path into:
     - bucket_name,
     - file_key
