@@ -7,14 +7,16 @@ class TestS3PathParser(unittest.TestCase):
 
         s3_path = "s3://bucket-name/folder/file.txt"
         expected_result = ({"bucket_name": 'bucket-name',
-                            "file_key": 'folder/file.txt', "file_format": 'txt'})
+                            "file_key": 'folder/file.txt',
+                            "file_format": 'txt'})
         self.assertEqual(s3_path_parser(s3_path), expected_result)
 
     def test_path_with_special_chars(self):
 
         s3_path = "s3://bucket-name/folder/!@$%^&*()_+=-{}[].txt"
         expected_result = ({"bucket_name": 'bucket-name',
-                            "file_key": 'folder/!@$%^&*()_+=-{}[].txt', "file_format": 'txt'})
+                            "file_key": 'folder/!@$%^&*()_+=-{}[].txt',
+                            "file_format": 'txt'})
         self.assertEqual(s3_path_parser(s3_path), expected_result)
 
     def test_path_with_no_folder(self):
