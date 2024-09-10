@@ -30,7 +30,7 @@ def mask_sensitive_data(
 
 
 def generate_masked_output(
-        masked_df: pd.DataFrame, type_result: str, file_format) -> None:
+        masked_df: pd.DataFrame, file_format) -> bytes:
     """ This function creates a csv, json file or byte-stream.
 
     Args:
@@ -41,24 +41,21 @@ def generate_masked_output(
     file in json, csv format or byte-stream with masked data.
     """
     try:
-        if file_format == 'json' and type_result == 'file':
-            masked_df.to_json(
-                'result.json', orient='records', lines=True)
-        if file_format == 'csv' and type_result == 'byte-stream':
+        if file_format == 'csv':
             byte_stream = io.BytesIO()
             masked_df.to_csv(byte_stream, index=False)
             byte_stream_value = byte_stream.getvalue()
-            logging.info(byte_stream_value)
+            logging.info('Byte stream value is written')
             return byte_stream_value
-        if file_format == 'json' and type_result == 'byte-stream':
+        if file_format == 'json':
             byte_stream = io.BytesIO()
             masked_df.to_json(byte_stream, orient='records', lines=True)
             byte_stream_value = byte_stream.getvalue()
-            logging.info(byte_stream_value)
+            logging.info('Byte stream value is written')
             return byte_stream_value
-        if file_format == 'csv' and type_result == 'file':
-            masked_df.to_csv(
-                'result.csv', index=False, encoding='utf-8')
+        else:
+            logging.error(
+                f"Invalid file format: {file_format}")
     except Exception as e:
-        logging.error(f"Error creating file or byte-stream: {e}")
+        logging.error(f"Error creating byte-stream: {e}")
         raise
