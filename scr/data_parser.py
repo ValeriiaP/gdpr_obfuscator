@@ -14,11 +14,14 @@ def s3_path_parser(s3_path: str) -> None:
     dictionary with next keys: bucket_name, file_key and file format.
 
     """
-    parsed_url = urlparse.urlparse(s3_path)
-    bucket_name = parsed_url.netloc
-    file_key = parsed_url.path.lstrip('/')
-    file_format = file_key.split('.')[-1]
+    try:
+        parsed_url = urlparse.urlparse(s3_path)
+        bucket_name = parsed_url.netloc
+        file_key = parsed_url.path.lstrip('/')
+        file_format = file_key.split('.')[-1]
 
-    return {"bucket_name": bucket_name,
-            "file_key": file_key,
-            "file_format": file_format}
+        return {"bucket_name": bucket_name,
+                "file_key": file_key,
+                "file_format": file_format}
+    except Exception as e:
+        raise ValueError(f"Invalid S3 path: {s3_path}. Error: {str(e)}")

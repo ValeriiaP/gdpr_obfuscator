@@ -43,4 +43,3 @@ class TestMaskSensitiveData(unittest.TestCase):
         self.assertEqual(mock_warning.call_count, 2)
         mock_info.assert_not_called()
         pd.testing.assert_frame_equal(expected_result, df)
-
