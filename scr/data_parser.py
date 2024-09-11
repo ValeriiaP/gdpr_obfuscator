@@ -15,6 +15,8 @@ def s3_path_parser(s3_path: str) -> dict:
 
     """
     try:
+        if not s3_path.startswith("s3://"):
+            raise ValueError("Invalid S3 path, it should start with 's3://'")
         parsed_url = urlparse.urlparse(s3_path)
         bucket_name = parsed_url.netloc
         file_key = parsed_url.path.lstrip('/')
