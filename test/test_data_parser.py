@@ -26,6 +26,16 @@ class TestS3PathParser(unittest.TestCase):
                             "file_key": 'file.txt', "file_format": 'txt'})
         self.assertEqual(s3_path_parser(s3_path), expected_result)
 
+    def test_path_with_invalid_s3_path(self, ):
+
+        s3_path = "s3:/bucket-name/file.txt"
+        with self.assertRaises(ValueError) as context:
+            s3_path_parser(s3_path)
+
+        self.assertTrue(
+            "Invalid S3 path, it should start with 's3://'"
+            in context.exception.args[0])
+
 
 if __name__ == '__main__':
     unittest.main()
