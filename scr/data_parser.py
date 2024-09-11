@@ -8,10 +8,10 @@ def s3_path_parser(s3_path: str) -> dict:
     - file format.
 
     Args:
-        s3_path: str
+        str: s3 path
 
     Returns:
-    dictionary with next keys: bucket_name, file_key and file format.
+        dict: dictionary with next keys: bucket_name, file_key and file format.
 
     """
     try:

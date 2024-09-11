@@ -5,11 +5,13 @@ import pandas as pd
 
 
 def read_from_S3(params: dict) -> StringIO:
-    """This function reads the file from an S3 bucket.
-    args:
-        params: dict
-    return:
-        data from the file from S3
+    """
+    This function reads the file from an S3 bucket.
+
+    Args:
+        dict: params 
+    Returns:
+        StringIO: data from the file from S3
     """
 
     try:
@@ -27,11 +29,12 @@ def read_from_S3(params: dict) -> StringIO:
 
 
 def read_from_file(params: dict) -> pd.DataFrame:
-    """This function reads a data from a file in S3 bucket.
-    args:
-        params: dict
-    return:
-        dataframe with the data from the file.
+    """
+    This function reads a data from a file.
+    Args:
+        dict: params
+    Returns:
+        DataFrame: dataframe with the data from the file.
     """
     try:
         data = read_from_S3(params)
