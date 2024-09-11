@@ -5,14 +5,15 @@ import json as JSON
 
 
 def obfuscate(input: JSON) -> bytes:
-    """ This function obfuscates sensitive data in the file.
+    """
+    This function obfuscates sensitive data in the file.
 
     Args:
-        file_to_obfuscate: str
-        pii_fields: list of strings
+        str: file_to_obfuscate
+        list (str): pii_fields
 
     Returns:
-    byte stream with masked data.
+        bytes: byte stream with masked data.
     """
     params = parser(input['file_to_obfuscate'])
     dataFrame = read_from_file(params)
