@@ -11,16 +11,13 @@ def mask_sensitive_data(
     """ This function mask sensitive data in the dataframe.
 
     Args:
-        dataframe: DataFrame
-        pii_fields: list of strings
+        DataFrame: DataFrame from file
+        list (str): pii_fields
 
     Returns:
-    DataFrame with replaced sensitive information.
-
+        DataFrame: DataFrame with replaced sensitive information
     """
-    if not pii_fields:
-        logging.info('No sensitive fields provided.')
-        return dataframe
+
     for field in pii_fields:
         if field in dataframe.columns:
             dataframe[field] = '***'
@@ -31,14 +28,13 @@ def mask_sensitive_data(
 
 def generate_masked_output(
         masked_df: pd.DataFrame, file_format) -> bytes:
-    """ This function creates a csv, json file or byte-stream.
+    """ This function creates byte-stream from dataframe.
 
     Args:
-        masked_df: DataFrame
-        type_result: str
+        DataFrame: masked DataFrame
 
     Returns:
-    file in json, csv format or byte-stream with masked data.
+        bytes: file in json, csv format or byte-stream with masked data.
     """
     try:
         if file_format == 'csv':
@@ -50,6 +46,12 @@ def generate_masked_output(
         if file_format == 'json':
             byte_stream = io.BytesIO()
             masked_df.to_json(byte_stream, orient='records', lines=True)
+            byte_stream_value = byte_stream.getvalue()
+            logging.info('Byte stream value is written')
+            return byte_stream_value
+        if file_format == 'parquet':
+            byte_stream = io.BytesIO()
+            masked_df.to_parquet(byte_stream, index=False)
             byte_stream_value = byte_stream.getvalue()
             logging.info('Byte stream value is written')
             return byte_stream_value
