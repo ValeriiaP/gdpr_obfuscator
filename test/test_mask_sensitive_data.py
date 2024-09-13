@@ -20,7 +20,7 @@ class TestMaskSensitiveData(unittest.TestCase):
         df = pd.DataFrame(data)
         pii_fields = ['Name', 'Phone']
         expected_result = {'Name': {0: '***'}, 'Email': {0: 'bob@example.com'}}
-        self.assertEqual(  (df, pii_fields).to_dict(), expected_result)
+        self.assertEqual(mask_data(df, pii_fields).to_dict(), expected_result)
         mock_warning.assert_called_once_with(
             "Field 'Phone' not found in dataframe columns.")
 
