@@ -1,8 +1,9 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 import pandas as pd
 from io import StringIO, BytesIO
 from scr.file_reader import read_from_file
+
 
 class TestReadFromFile(unittest.TestCase):
 
@@ -23,7 +24,8 @@ class TestReadFromFile(unittest.TestCase):
 
     @patch('scr.file_reader.read_from_S3')
     def test_read_from_file_json(self, mock_read_from_S3):
-        mock_read_from_S3.return_value = StringIO('{"col1": ["val1"], "col2": ["val2"]}')
+        mock_read_from_S3.return_value = StringIO(
+            '{"col1": ["val1"], "col2": ["val2"]}')
 
         params = {
             'bucket_name': 'test-bucket',
@@ -40,7 +42,8 @@ class TestReadFromFile(unittest.TestCase):
     def test_read_from_file_parquet(self, mock_read_from_S3):
         mock_read_from_S3.return_value = BytesIO(b'parquet data')
         with patch('pandas.read_parquet') as mock_read_parquet:
-            mock_read_parquet.return_value = pd.DataFrame({'col1': ['val1'], 'col2': ['val2']})
+            mock_read_parquet.return_value = pd.DataFrame(
+                {'col1': ['val1'], 'col2': ['val2']})
 
             params = {
                 'bucket_name': 'test-bucket',
