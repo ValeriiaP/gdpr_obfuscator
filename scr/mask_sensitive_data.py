@@ -37,27 +37,21 @@ def generate_masked_output(
         bytes: file in json, csv format or byte-stream with masked data.
     """
     try:
+        byte_stream = io.BytesIO()
+
         if file_format == 'csv':
-            byte_stream = io.BytesIO()
             masked_df.to_csv(byte_stream, index=False)
-            byte_stream_value = byte_stream.getvalue()
-            logging.info('Byte stream value is written')
-            return byte_stream_value
         if file_format == 'json':
-            byte_stream = io.BytesIO()
             masked_df.to_json(byte_stream, orient='records', lines=True)
-            byte_stream_value = byte_stream.getvalue()
-            logging.info('Byte stream value is written')
-            return byte_stream_value
         if file_format == 'parquet':
-            byte_stream = io.BytesIO()
             masked_df.to_parquet(byte_stream, index=False)
-            byte_stream_value = byte_stream.getvalue()
-            logging.info('Byte stream value is written')
-            return byte_stream_value
-        else:
+        elif file_format not in ['csv', 'json', 'parquet']:
             logging.error(
                 f"Invalid file format: {file_format}")
+
+        byte_stream_value = byte_stream.getvalue()
+        logging.info('Byte stream value is written')
+        return byte_stream_value
     except Exception as e:
         logging.error(f"Error creating byte-stream: {e}")
         raise
