@@ -11,7 +11,7 @@ def s3_path_parser(s3_path: str) -> dict:
         str: s3 path
 
     Returns:
-        dict: dictionary with next keys: bucket_name, file_key and file format.
+        dict (str): dictionary with next keys: bucket_name, file_key and file format.
 
     """
     try:
