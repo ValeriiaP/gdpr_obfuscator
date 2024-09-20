@@ -29,6 +29,7 @@ def read_from_S3(params: dict) -> StringIO | io.BytesIO:
     except botocore.exceptions.ClientError as e:
         if e.response['Error']['Code'] == "404":
             print("The file does not exist.")
+            raise
         else:
             raise
 
