@@ -67,6 +67,24 @@ class TestReadFromS3(unittest.TestCase):
             Bucket='test-bucket', Key='nonexistent.csv')
 
     @patch('boto3.client')
+    def test_read_from_s3_file_not_exist(self, mock_boto_client):
+        mock_s3 = MagicMock()
+        mock_s3.get_object.side_effect = FileNotFoundError(
+            "The file does not exist.")
+        mock_boto_client.return_value = mock_s3
+
+        params = {
+            'bucket_name': 'test-bucket',
+            'file_key': 'nonexistent.csv',
+            'file_format': 'csv'
+        }
+
+        with self.assertRaises(FileNotFoundError) as context:
+            read_from_S3(params)
+
+        self.assertEqual(str(context.exception), "The file does not exist.")
+
+    @patch('boto3.client')
     def test_other_client_error(self, mock_boto_client):
         mock_s3 = MagicMock()
         mock_boto_client.return_value = mock_s3
