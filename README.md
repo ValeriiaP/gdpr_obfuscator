@@ -10,7 +10,7 @@
 
    ### **Storage:**
 
-   The data is stored in an AWS S3 bucket, so this tool requires proper AWS configuration.
+   Input data is stored in an AWS S3 bucket, so this tool requires proper AWS configuration.
 
 ## Installation
 
